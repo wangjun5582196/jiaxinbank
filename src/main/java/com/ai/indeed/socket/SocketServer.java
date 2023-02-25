@@ -3,7 +3,6 @@ package com.ai.indeed.socket;
 import cn.hutool.core.date.DateUtil;
 
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.ServerSocket;
@@ -45,14 +44,19 @@ public class SocketServer {
         executor.shutdown();
         serverSocket.close();
     }
-    public static void  initParams() throws FileNotFoundException {
-        InputStream in =new FileInputStream("properties/param.properties");
+
+    public static void initParams() throws IOException {
+        InputStream in = new FileInputStream("properties/param.properties");
         Properties ps = new Properties();
         try {
             ps.load(in);
-            port=Integer.valueOf(ps.getProperty("port"));
+            port = Integer.valueOf(ps.getProperty("port"));
         } catch (IOException e) {
             e.printStackTrace();
+        } finally {
+            if (in != null) {
+                in.close();
+            }
         }
     }
 }

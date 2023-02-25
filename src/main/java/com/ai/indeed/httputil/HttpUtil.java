@@ -1,5 +1,6 @@
 package com.ai.indeed.httputil;
 
+import cn.hutool.core.date.DateUtil;
 import com.alibaba.fastjson.JSON;
 import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
@@ -35,7 +36,7 @@ public class HttpUtil {
         Map<String,Object> requestParam = new HashMap<>();
         requestParam.put("inputParam",param);
         String data = JSON.toJSONString(requestParam);
-        System.out.println("调用commander请求参数"+data);
+        System.out.println(DateUtil.now() + "调用commander请求参数" + data);
         RequestBody body=RequestBody.create(mediaType, data);
         Request request=new Request.Builder().url(requestUrl.replace("jobUuid",jobUUID)).method("PUT",body).
                 addHeader("Content-Type","application/json")
@@ -62,17 +63,27 @@ public class HttpUtil {
 
 
     public static void  initParams()  {
-        InputStream in ;
+        InputStream in = null;
         Properties ps = new Properties();
         try {
             in = new FileInputStream("properties/param.properties");
             ps.load(in);
-            appKey=String.valueOf(ps.getProperty("appKey"));
-            appSecret=String.valueOf(ps.getProperty("appSecret"));
-            requestUrl=String.valueOf(ps.getProperty("requestUrl"));
+            appKey = String.valueOf(ps.getProperty("appKey"));
+            appSecret = String.valueOf(ps.getProperty("appSecret"));
+            requestUrl = String.valueOf(ps.getProperty("requestUrl"));
         } catch (IOException e) {
             e.printStackTrace();
+        } finally {
+            if (in != null) {
+                try {
+                    in.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
         }
+
+
     }
 
     public static void main(String[] args) {

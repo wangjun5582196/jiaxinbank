@@ -33,23 +33,21 @@ public class ServerTask implements Runnable {
         ) {
             String inputLine;
             while ((inputLine = in.readLine()) != null) {
-                System.out.println(DateUtil.now()+"客户端发来消息：" + inputLine);
+                System.out.println(DateUtil.now() + "客户端发来消息：" + inputLine);
                 //解析Xml报文并发送http请求
-                inputLine=inputLine.substring(8);
-                Map<String,String> params = XmlParaser.readXml(inputLine);
-                Map<String,String> headParams = XmlParaser.readHeadXml(inputLine);
-                if(params.size()==0){
-                    System.err.println(DateUtil.now()+"客户端发来请求参数为空：" + inputLine);
+                inputLine = inputLine.substring(8);
+                Map<String, String> params = XmlParaser.readXml(inputLine);
+                Map<String, String> headParams = XmlParaser.readHeadXml(inputLine);
+                if (params.size() == 0) {
+                    System.err.println(DateUtil.now() + "客户端发来请求参数为空：" + inputLine);
                 }
-                String jobUuid="";
-                String type=params.get("SysTp");
-                if("GD".equals(type)){
-                    jobUuid=initParams("GD");
-                }else{
-                    jobUuid=initParams("GM");
-                }
-                String response = HttpUtil.sendStartJob(jobUuid,params);
-                out.write(initResponse(headParams,response));
+                String jobUuid = "";
+                String type = params.get("SysTp");
+                String types = initParams("sysTps");
+                String[] jobUuids = initParams("jobUuids").split(",");
+                jobUuid = jobUuids[types.indexOf(type)];
+                String response = HttpUtil.sendStartJob(jobUuid, params);
+                out.write(initResponse(headParams, response));
                 out.flush();
             }
             socket.close();
@@ -103,9 +101,17 @@ public class ServerTask implements Runnable {
         String jobUuid="";
         try {
             ps.load(in);
-            jobUuid=String.valueOf(ps.getProperty(type));
+            jobUuid = String.valueOf(ps.getProperty(type));
         } catch (IOException e) {
             e.printStackTrace();
+        } finally {
+            if (in != null) {
+                try {
+                    in.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
         }
         return jobUuid;
     }

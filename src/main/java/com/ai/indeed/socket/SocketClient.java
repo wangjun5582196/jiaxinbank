@@ -30,7 +30,7 @@ public class SocketClient {
                 "<BODY>" +
                 "<CstdySrlNo>系统类型</CstdySrlNo>" +
                 "<SbmtTm>调用时间</SbmtTm>" +
-                "<SysTp>权利证书流水号</SysTp>" +
+                "<SysTp>GD</SysTp>" +
                 "</BODY>" +
                 "</service>";
 
