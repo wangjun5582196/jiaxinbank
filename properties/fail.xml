@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<service>
+<SYS_HEAD>
+    <SvcCd>30220002</SvcCd>
+    <ScnCd>01</ScnCd>
+    <BsnSrINo>GMID20200618000000000001</BsnSrINo>
+    <CnsmrSysNo>MlD</CnsmrSysNo>
+    <CnsmrSysSrINo>CMID20200618000000000001</CnsmrSysSrINo>
+    <TxnRetDt>20200618</TxnRetDt>
+    <TxnRetTm>090000</TxnRetTm>
+    <PvdrSysSrINo>CRPA20230221000000000001</PvdrSysSrINo>
+    <PvdrSysNo>RPA</PvdrSysNo>
+    <RetSt>S</RetSt>
+    <RetCd>500</RetCd>
+    <RetMsg>内部错误</RetMsg>
+</SYS_HEAD>
+</service>
