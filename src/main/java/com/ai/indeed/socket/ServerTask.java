@@ -10,6 +10,7 @@ import java.io.*;
 import java.net.Socket;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.Map;
 import java.util.Properties;
@@ -43,9 +44,9 @@ public class ServerTask implements Runnable {
                 }
                 String jobUuid = "";
                 String type = params.get("SysTp");
-                String types = initParams("sysTps");
+                String[] types = initParams("sysTps").split(",");
                 String[] jobUuids = initParams("jobUuids").split(",");
-                jobUuid = jobUuids[types.indexOf(type)];
+                jobUuid = jobUuids[Arrays.asList(types).indexOf(type)];
                 String response = HttpUtil.sendStartJob(jobUuid, params);
                 out.write(initResponse(headParams, response));
                 out.flush();
