@@ -1,11 +1,12 @@
 package com.ai.indeed.httputil;
 
-import cn.hutool.core.date.DateUtil;
 import com.alibaba.fastjson.JSON;
 import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.RequestBody;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -22,32 +23,34 @@ import java.util.concurrent.TimeUnit;
 public class HttpUtil {
     private static final OkHttpClient okHttpClient;
     private static String requestUrl;
-   // private static final String requestUrl="http://z-commander-fe.qa.ii-ai.tech/commander-manager-api/openAPI/v1/job/jobUuid/1";
+    // private static final String requestUrl="http://z-commander-fe.qa.ii-ai.tech/commander-manager-api/openAPI/v1/job/jobUuid/1";
     private static String appKey;
     private static String appSecret;
-    private static String feVesion="1.7.6.6";
+
+    private static Logger logger = LoggerFactory.getLogger(HttpUtil.class);
+    private static String feVesion = "1.7.6.6";
+
     static {
         initParams();
-        okHttpClient=okHttpClient();
+        okHttpClient = okHttpClient();
     }
 
-    public  static String  sendStartJob(String jobUUID,Map<String,String> param){
-        MediaType mediaType= MediaType.parse("application/json");
-        Map<String,Object> requestParam = new HashMap<>();
-        requestParam.put("inputParam",param);
+    public static String sendStartJob(String uuid, String jobUUID, Map<String, String> param) {
+        MediaType mediaType = MediaType.parse("application/json");
+        Map<String, Object> requestParam = new HashMap<>();
+        requestParam.put("inputParam", param);
         String data = JSON.toJSONString(requestParam);
-        System.out.println(DateUtil.now() + "调用commander请求参数" + data);
-        RequestBody body=RequestBody.create(mediaType, data);
-        Request request=new Request.Builder().url(requestUrl.replace("jobUuid",jobUUID)).method("PUT",body).
-                addHeader("Content-Type","application/json")
-                .addHeader("APPKey",appKey)
-                .addHeader("APPSecret",appSecret)
-                .addHeader("commander-fe-version",feVesion)
+        RequestBody body = RequestBody.create(mediaType, data);
+        Request request = new Request.Builder().url(requestUrl.replace("jobUuid", jobUUID)).method("PUT", body).
+                addHeader("Content-Type", "application/json")
+                .addHeader("APPKey", appKey)
+                .addHeader("APPSecret", appSecret)
+                .addHeader("commander-fe-version", feVesion)
                 .build();
-
+        logger.info("交易流水号{},请求控制器,请求报文为{}", uuid, JSON.toJSONString(param));
         String response = null;
         try {
-            response= okHttpClient.newCall(request).execute().body().string();
+            response = okHttpClient.newCall(request).execute().body().string();
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -92,7 +95,7 @@ public class HttpUtil {
         map.put("Sbm111tTm","");
         map.put("SysTp","");
 
-        sendStartJob("d516908c26438a0350e70eb9264ec6c1",map);
+        sendStartJob("112233", "d516908c26438a0350e70eb9264ec6c1", map);
     }
 
 }

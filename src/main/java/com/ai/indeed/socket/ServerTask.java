@@ -1,10 +1,13 @@
 package com.ai.indeed.socket;
 
 import cn.hutool.core.date.DateUtil;
+import cn.hutool.core.lang.UUID;
 import com.ai.indeed.httputil.HttpUtil;
 import com.ai.indeed.xml.XmlParaser;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.*;
 import java.net.Socket;
@@ -20,7 +23,9 @@ import java.util.stream.Stream;
  * @author wangjunjun
  */
 public class ServerTask implements Runnable {
-    private Socket socket ;
+    private Socket socket;
+
+    private Logger logger = LoggerFactory.getLogger(ServerTask.class);
 
     public ServerTask(Socket socket) {
         this.socket = socket;
@@ -34,20 +39,27 @@ public class ServerTask implements Runnable {
         ) {
             String inputLine;
             while ((inputLine = in.readLine()) != null) {
-                System.out.println(DateUtil.now() + "客户端发来消息：" + inputLine);
+                String uuid = UUID.randomUUID().toString();
+                Long start = System.currentTimeMillis();
+                logger.info("交易流水号{},开始交易", uuid);
+                logger.info("交易流水号{},收到请求:rec[{}]", uuid, inputLine);
                 //解析Xml报文并发送http请求
                 inputLine = inputLine.substring(8);
                 Map<String, String> params = XmlParaser.readXml(inputLine);
                 Map<String, String> headParams = XmlParaser.readHeadXml(inputLine);
                 if (params.size() == 0) {
-                    System.err.println(DateUtil.now() + "客户端发来请求参数为空：" + inputLine);
+                    logger.error("交易流水号{},客户端发来请求参数为空,请求报文为{}", uuid, inputLine);
                 }
                 String jobUuid = "";
                 String type = params.get("SysTp");
                 String[] types = initParams("sysTps").split(",");
                 String[] jobUuids = initParams("jobUuids").split(",");
                 jobUuid = jobUuids[Arrays.asList(types).indexOf(type)];
-                String response = HttpUtil.sendStartJob(jobUuid, params);
+                logger.info("交易流水号{},交易基本信息为{}", uuid, JSON.toJSONString(params));
+                String response = HttpUtil.sendStartJob(uuid, jobUuid, params);
+                logger.info("交易流水号{},send[{}]", uuid, JSON.toJSONString(response));
+                Long timeCost = System.currentTimeMillis() - start;
+                logger.info("交易流水号{},==============交易结束[耗时:{}s]============", uuid, timeCost / 1000);
                 out.write(initResponse(headParams, response));
                 out.flush();
             }
@@ -78,7 +90,7 @@ public class ServerTask implements Runnable {
             prefix=prefix+"0";
         }
         successTemplate=prefix+(successTemplate.length())+successTemplate;
-        System.out.println(DateUtil.now()+"服务器响应报文"+successTemplate);
+//        System.out.println(DateUtil.now()+"服务器响应报文"+successTemplate);
         return successTemplate;
     }
 
