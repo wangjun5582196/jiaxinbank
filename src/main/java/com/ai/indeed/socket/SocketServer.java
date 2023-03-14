@@ -20,7 +20,6 @@ public class SocketServer {
     private static final ExecutorService executor = new ThreadPoolExecutor(THREAD_POOL_SIZE, THREAD_POOL_SIZE, 0L, TimeUnit.MILLISECONDS, new ArrayBlockingQueue<Runnable>(QUEUE_SIZE));
     public static void main(String[] args) throws IOException {
         Logger logger = LoggerFactory.getLogger(SocketServer.class);
-        String s = Thread.currentThread().getContextClassLoader().getResource("").getPath();
         ServerSocket serverSocket = null;
         boolean listening = true;
         initParams();

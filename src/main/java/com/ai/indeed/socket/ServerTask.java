@@ -57,7 +57,7 @@ public class ServerTask implements Runnable {
                 jobUuid = jobUuids[Arrays.asList(types).indexOf(type)];
                 logger.info("交易流水号{},交易基本信息为{}", uuid, JSON.toJSONString(params));
                 String response = HttpUtil.sendStartJob(uuid, jobUuid, params);
-                logger.info("交易流水号{},send[{}]", uuid, JSON.toJSONString(response));
+                logger.info("交易流水号{},返回结果:send[{}]", uuid, JSON.toJSONString(response));
                 Long timeCost = System.currentTimeMillis() - start;
                 logger.info("交易流水号{},==============交易结束[耗时:{}s]============", uuid, timeCost / 1000);
                 out.write(initResponse(headParams, response));
