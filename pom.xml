@@ -63,6 +63,24 @@
       <version>1.7.32</version>
     </dependency>
 
+    <dependency>
+      <groupId>com.sun.mail</groupId>
+      <artifactId>javax.mail</artifactId>
+      <version>1.6.2</version>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.httpcomponents</groupId>
+      <artifactId>httpclient</artifactId>
+      <version>4.5.13</version>
+    </dependency>
+
+
+     <dependency>
+     <groupId>cn.hutool</groupId>
+     <artifactId>hutool-all</artifactId>
+     <version>5.8.9</version>
+     </dependency>
+
 
   </dependencies>
 
