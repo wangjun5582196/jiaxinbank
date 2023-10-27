@@ -45,12 +45,12 @@ public class EmailSender {
 //        props.put("mail.smtp.proxy.port", "3045");
 //
         // 设置代理服务器的用户名和密码
-        props.put("mail.smtp.proxy.user", "wangjun5582196");
-        props.put("mail.smtp.proxy.password", "1pajyb3z");
-
-        //可以的配置
-        props.put("mail.smtp.proxy.host", "36.138.215.47");
-        props.put("mail.smtp.proxy.port", "16819");
+//        props.put("mail.smtp.proxy.user", "wangjun5582196");
+//        props.put("mail.smtp.proxy.password", "1pajyb3z");
+//
+//        //可以的配置
+//        props.put("mail.smtp.proxy.host", "36.138.215.47");
+//        props.put("mail.smtp.proxy.port", "16819");
 
 //        props.put("mail.smtp.proxy.host", "10.106.251.6");
 //        props.put("mail.smtp.proxy.port", "8080");
@@ -60,6 +60,18 @@ public class EmailSender {
         Session session = Session.getInstance(props);
 
         try {
+
+            String htmlContent = "<html><body><h1>邮件内容</h1>"
+                    + "<table style='border-collapse: collapse;'>"
+                    + "<tr><th style='border: 1px solid black;'>列1</th><th style='border: 1px solid black;'>列2</th></tr>"
+                    + "<tr><td style='border: 1px solid black;'>值1</td><td style='border: 1px solid black;'>值2</td></tr>"
+                    + "</table></body></html>";
+            htmlContent=htmlContent+"<html><body><h1>邮件内容</h1>"
+                    + "<table style='border-collapse: collapse;'>"
+                    + "<tr><th style='border: 1px solid black;'>列1</th><th style='border: 1px solid black;'>列2</th></tr>"
+                    + "<tr><td style='border: 1px solid black;'>值1</td><td style='border: 1px solid black;'>值2</td></tr>"
+                    + "</table></body></html>";
+
             // 创建MimeMessage对象
             MimeMessage message = new MimeMessage(session);
 
@@ -71,7 +83,8 @@ public class EmailSender {
 
             // 设置邮件主题和内容
             message.setSubject("Hello from JavaMailProxy");
-            message.setText("This is a test email from JavaMail.proxy");
+            message.setText(htmlContent, "UTF-8", "html");
+
 
             // 发送邮件
             Transport transport = session.getTransport("smtp");

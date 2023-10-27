@@ -1,6 +1,8 @@
 package com.ai.indeed.email;
 
+import java.util.HashSet;
 import java.util.Properties;
+import java.util.Set;
 import javax.mail.Message;
 import javax.mail.MessagingException;
 import javax.mail.Session;
@@ -25,7 +27,7 @@ public class EmailSender2 {
         props.put("mail.smtp.auth", "true");
         props.put("mail.smtp.ssl.enable", "false");
         props.put("mail.smtp.host", host);
-        props.put("mail.smtp.port", "25");
+        props.put("mail.smtp.port", "d");
 
         // 创建Session对象
         Session session = Session.getInstance(props);
@@ -54,5 +56,27 @@ public class EmailSender2 {
         } catch (MessagingException e) {
             e.printStackTrace();
         }
+    }
+
+
+    public boolean getXO(String str) {
+        if("".equals(str)){
+            return false;
+        }
+        Boolean flag=false;
+        Integer length=str.length();
+        Set<String> strSet = new HashSet<>();
+        for(int i=0;i<length;i++){
+            String temp=str.substring(i,i+1);
+            if(strSet.contains(temp)){
+                flag=true;
+                break;
+            }else{
+                strSet.add(temp);
+            }
+        }
+        // 在这⾥写代码
+        return flag ;
+
     }
 }
