@@ -22,7 +22,7 @@ public class EmlParser {
 
     public static void main(String[] args) {
         // 读取.eml文件路径
-        String emlFilePath = "C:\\Users\\wangjun51000\\Desktop/wangjun.eml";
+        String emlFilePath = "C:\\Users\\wangjun51000\\Desktop/20231117-阳光资产每日净值-华鑫信托.eml";
 
         // 配置JavaMail会话
         Properties properties = System.getProperties();
@@ -31,6 +31,7 @@ public class EmlParser {
         try {
             // 创建MimeMessage对象并加载.eml文件
             MimeMessage message = new MimeMessage(session, new FileInputStream(emlFilePath));
+            System.out.println("message_id------"+message.getMessageID());
 
             // 解析邮件内容
             String subject = message.getSubject();

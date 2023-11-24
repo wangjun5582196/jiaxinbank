@@ -1,15 +1,12 @@
 package com.ai.indeed.email;
 
-import com.ai.indeed.proxy.ClientProxyBasicHttp;
-
-import java.net.Authenticator;
-import java.util.Properties;
 import javax.mail.Message;
 import javax.mail.MessagingException;
 import javax.mail.Session;
 import javax.mail.Transport;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
+import java.util.Properties;
 
 public class EmailSender {
     public static void main(String[] args) {
@@ -73,7 +70,7 @@ public class EmailSender {
                     + "</table></body></html>";
 
             // 创建MimeMessage对象
-            MimeMessage message = new MimeMessage(session);
+            MimeMessage message = new MyMessage(session);
 
             // 设置发件人
             message.setFrom(new InternetAddress(fromEmail));
@@ -90,6 +87,7 @@ public class EmailSender {
             Transport transport = session.getTransport("smtp");
             transport.connect(host, username, password);
             transport.sendMessage(message, message.getAllRecipients());
+            System.out.println(message.getMessageID());
             transport.close();
 
             System.out.println("Email sent successfully.");
