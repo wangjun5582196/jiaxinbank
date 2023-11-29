@@ -22,7 +22,7 @@ public class EmlParser {
 
     public static void main(String[] args) {
         // 读取.eml文件路径
-        String emlFilePath = "C:\\Users\\wangjun51000\\Desktop/20231117-阳光资产每日净值-华鑫信托.eml";
+        String emlFilePath = "C:\\Users\\wangjun51000\\Desktop/衍复安享中证1000指数增强六号私募证券投资基金_20231128(1).eml";
 
         // 配置JavaMail会话
         Properties properties = System.getProperties();
