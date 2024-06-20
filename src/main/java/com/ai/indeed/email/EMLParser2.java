@@ -8,13 +8,18 @@ import java.util.Properties;
 public class EMLParser2 {
 
     public static void main(String[] args) {
-        String emlFilePath = "C:\\Users\\wangjun51000\\Desktop/衍复安享中证1000指数增强六号私募证券投资基金_20231128(1).eml";
+        String emlFilePath = "C:\\Users\\wangjun51000\\Desktop\\问题邮件/弘业弘惠1号证券投资基金估值表.eml";
         String outputDirectory = "C:\\Users\\wangjun51000\\Desktop/";
 
         try {
             Session session = Session.getDefaultInstance(new Properties());
             InputStream inputStream = new FileInputStream(emlFilePath);
             MimeMessage message = new MimeMessage(session, inputStream);
+            System.out.println(message.getSubject());
+
+            System.out.println(Md5CalculateUtil.MD5(message.getMessageID()));
+
+
             processParts(message, outputDirectory,8);
         } catch (Exception e) {
             e.printStackTrace();
@@ -23,7 +28,7 @@ public class EMLParser2 {
 
     private static void processParts(Part part, String outputDirectory,int retryCount) throws Exception {
         String disposition = part.getDisposition();
-        System.out.println(disposition);
+        System.out.println("Disposition: " + disposition);
         if(retryCount==0){
             return;
         }
@@ -38,8 +43,8 @@ public class EMLParser2 {
         }else if(Part.ATTACHMENT.equalsIgnoreCase(disposition) || Part.INLINE.equalsIgnoreCase(disposition)){
             String fileName = MailUtil.deCode(part.getFileName());
             String filePath = outputDirectory + File.separator + fileName;
-            saveAttachment(part, filePath);
             System.out.println("Saved attachment: " + filePath);
+            saveAttachment(part, filePath);
         } else if (part.isMimeType("application/octet-stream")) {
             if (disposition != null && (disposition.equalsIgnoreCase(Part.ATTACHMENT) || disposition.equalsIgnoreCase(Part.INLINE))) {
                 String fileName = MailUtil.deCode(part.getFileName());

@@ -1,22 +1,21 @@
 package com.ai.indeed.email;
 
+import com.sun.mail.imap.IMAPFolder;
 import com.sun.mail.pop3.POP3Folder;
 
 import javax.mail.Folder;
 import javax.mail.Message;
 import javax.mail.Session;
 import javax.mail.Store;
-import javax.mail.internet.MimeMessage;
-import java.util.Arrays;
 import java.util.Properties;
 
-public class MailCilent {
+public class MailCilentQQ {
     public static void main(String[] args) {
         // 邮件服务器配置
-        String host = "pop.qq.com";
+        String host = "pop3.aliyun.com";
         int port = 995;
-        String username = "804534813@qq.com";
-        String password = "zdftnbufizbhbede";
+        String username = "wangjun5582196@aliyun.com";
+        String password = "wang5582196";
 
         // 代理服务器配置
 //        String proxyHost = "106.227.9.22";
@@ -34,7 +33,7 @@ public class MailCilent {
             props.put("mail.pop3.host", host);
             props.put("mail.pop3.port", port);
             props.put("mail.pop3.ssl.enable", "true");
-            props.setProperty("mail.debug", "true");
+//            props.setProperty("mail.debug", "true");
 
             // 创建代理配置
 
@@ -50,13 +49,13 @@ public class MailCilent {
 
             // 获取收件箱
             Folder inbox = store.getFolder("INBOX");
-
             inbox.open(Folder.READ_ONLY);
 
             // 打印邮件信息
             Message[] messages = inbox.getMessages();
             for (Message message : messages) {
-                //System.out.println(((POP3Folder)inbox).getUID(message));
+                System.out.println(((POP3Folder)inbox).getUID(message));
+
                 System.out.println("Subject: " + message.getSubject());
 //                System.out.println("From: " + message.getFrom()[0]);
 //                System.out.println("Text: " + message.getContent().toString());

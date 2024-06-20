@@ -10,8 +10,13 @@ import java.util.Properties;
 
 public class EmailSender {
     public static void main(String[] args) {
+        for (int i = 0; i < 1; i++) {
+            sendEmail();
+        }
+    }
 
-//        System.setProperty("socksProxyHost", "1.194.237.25");
+    public static void sendEmail(){
+        //        System.setProperty("socksProxyHost", "1.194.237.25");
 //        System.setProperty("socksProxyPort", "3045");
 //        System.setProperty("socksProxySet","true");
 
@@ -23,7 +28,7 @@ public class EmailSender {
 
         // 发件人和收件人信息
         String fromEmail = "wangjun5582196@163.com";
-        String toEmail = "804534813@qq.com";
+        String toEmail = "wangjun51000@hundsun.com";
 
         // 创建Properties对象，设置SMTP服务器和认证信息
         Properties props = new Properties();
@@ -58,16 +63,20 @@ public class EmailSender {
 
         try {
 
-            String htmlContent = "<html><body><h1>邮件内容</h1>"
-                    + "<table style='border-collapse: collapse;'>"
-                    + "<tr><th style='border: 1px solid black;'>列1</th><th style='border: 1px solid black;'>列2</th></tr>"
-                    + "<tr><td style='border: 1px solid black;'>值1</td><td style='border: 1px solid black;'>值2</td></tr>"
-                    + "</table></body></html>";
-            htmlContent=htmlContent+"<html><body><h1>邮件内容</h1>"
-                    + "<table style='border-collapse: collapse;'>"
-                    + "<tr><th style='border: 1px solid black;'>列1</th><th style='border: 1px solid black;'>列2</th></tr>"
-                    + "<tr><td style='border: 1px solid black;'>值1</td><td style='border: 1px solid black;'>值2</td></tr>"
-                    + "</table></body></html>";
+            String htmlContent = "<br/>\n" +
+                    "<table border=\"1\">\n" +
+                    "    <tbody>\n" +
+                    "    <tr>\n" +
+                    "        <td style=\"text-align: center;\"><b>状态</b></td>\n" +
+                    "        <td style=\"text-align: center;\"><b>产品</b></td>\n" +
+                    "        <td style=\"text-align: center;\"><b>业务日期</b></td>\n" +
+                    "        <td style=\"text-align: center;\"><b>文件类型</b></td>\n" +
+                    "        <td style=\"text-align: center;\"><b>数据类型</b></td>\n" +
+                    "        <td style=\"text-align: center;\"><b>资金账户/证券信息</b></td>\n" +
+                    "        <td style=\"text-align: center;\"><b>催收机构</b></td>\n" +
+                    "        <td style=\"text-align: center;\"><b>营业部</b></td>\n" +
+                    "        <td style=\"text-align: center;\"><b>管理人</b></td>\n" +
+                    "    </tr> <tr> <td>未催收未齐备</td> <td>2024_方正富邦</td> <td>20240417</td> <td>对账单</td> <td>期权结算资金账户</td> <td>134567837</td> <td>工商银行</td> <td></td> <td></td> </tr> <tr> <td>已催收未齐备</td> <td>2024_方正富邦</td> <td>20240417</td> <td>对账单</td> <td>券商普通资金账户</td> <td>236782378</td> <td>浙商证券</td> <td>中信证券</td> <td></td> </tr> <tr> <td>未催收未齐备</td> <td>2024_方正富邦</td> <td>20240417</td> <td>对账单</td> <td>券商信用资金账户</td> <td>567456723</td> <td>浙商证券</td> <td>广发证券</td> <td></td> </tr> </tbody> </table> <br/>";
 
             // 创建MimeMessage对象
             MimeMessage message = new MyMessage(session);
@@ -95,4 +104,5 @@ public class EmailSender {
             e.printStackTrace();
         }
     }
+
 }

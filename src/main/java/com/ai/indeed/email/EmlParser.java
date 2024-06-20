@@ -22,7 +22,7 @@ public class EmlParser {
 
     public static void main(String[] args) {
         // 读取.eml文件路径
-        String emlFilePath = "C:\\Users\\wangjun51000\\Desktop/衍复安享中证1000指数增强六号私募证券投资基金_20231128(1).eml";
+        String emlFilePath = "C:\\Users\\wangjun51000\\Desktop\\问题邮件/弘业弘惠1号证券投资基金估值表.eml";
 
         // 配置JavaMail会话
         Properties properties = System.getProperties();
@@ -44,6 +44,19 @@ public class EmlParser {
             System.out.println("From: " + from);
             System.out.println("To: " + to);
             System.out.println("Content: " + content);
+
+            String[] tas = message.getHeader("Subject");
+            System.out.println("原生获取主题---"+message.getSubject());
+            String subject123 = "";
+            if (tas != null) {
+                StringBuilder r = new StringBuilder(tas[0]);
+                for (int i = 1; i < tas.length; i++) {
+                    r.append(tas[i]);
+                }
+                subject123 = r.toString();
+            }
+            System.out.println( MailUtil.deCode(subject123));
+
             List<AttachmentInfo> attachments = new ArrayList<>();
             if (message.isMimeType(MULTIPART)) {
                 Multipart mp = (Multipart) message.getContent();
@@ -79,7 +92,6 @@ public class EmlParser {
                     attachments.add(attachment);
                 }
             }
-            System.out.println(attachments.size());
         } catch (MessagingException | IOException e) {
             e.printStackTrace();
         }

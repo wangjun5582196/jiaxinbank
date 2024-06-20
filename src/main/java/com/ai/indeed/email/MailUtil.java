@@ -4,6 +4,8 @@ import org.apache.commons.lang3.StringUtils;
 
 import javax.mail.internet.MimeUtility;
 import javax.mail.internet.ParseException;
+import java.util.Arrays;
+import java.util.List;
 import java.util.StringTokenizer;
 
 /**
@@ -11,6 +13,7 @@ import java.util.StringTokenizer;
  * @date 20220524
  */
 public class MailUtil {
+    private static final List<String> charSet = Arrays.asList("utf-8,GBK".split(","));
 
     /**
      * 从邮件正文中获取的主题信息，在这里做拼接转换操作
@@ -19,6 +22,8 @@ public class MailUtil {
      */
     public static String deCode(String mainSubject) {
         String subject = "";
+        mainSubject=mainSubject.replaceAll("\r\n","").replace(" ", "").trim();
+        String prefix = mainSubject.substring(0, mainSubject.indexOf("=?")==-1?0:mainSubject.indexOf("=?"));
         try{
             if (StringUtils.isNotBlank(mainSubject) && mainSubject.contains("?==?")) {
                 mainSubject = mainSubject.replace("?==?","?=\n=?");
@@ -56,12 +61,12 @@ public class MailUtil {
 
                 } else {
                     // 头部固定匹配 =?
-                    if (!s.startsWith("=?")) {
+                    if (!s.contains("=?")) {
                         throw new ParseException(
                                 "encoded word does not include charset: " + s);
                     }
                     // 获取 头部信息中封装的 charSet 信息
-                    int start = 2;
+                    int start = s.indexOf("?") + 1;
                     int pos;
                     if ((pos = s.indexOf('?', start)) == -1) {
                         throw new ParseException(
@@ -104,7 +109,7 @@ public class MailUtil {
                     String sub = s.substring(start, pos);
                     // base64编码一般以=号做补位，如果出现 = 在非末尾段 则使用原生方法解析
                     if (sub.contains("=") && st.hasMoreTokens() && encoding.equalsIgnoreCase("B")) {
-                            return MimeUtility.decodeText(mainSubject);
+                        return MimeUtility.decodeText(mainSubject);
                     }
                     sb.append(sub);
                     // 如果当前段不是以？= 结尾，则调整
@@ -121,14 +126,25 @@ public class MailUtil {
                 }
             }
             // 根据现有信息返回一个不做分隔的完整字符串
-            String currentSubject = "=?" + lastCharSet + "?" + lastEncoding + "?" + sb.toString() + "?=";
+            String currentSubject = "=?" + lastCharSet + "?" + lastEncoding + "?" + sb + "?=";
+            String rightCharSet = "";
+            if(StringUtils.isEmpty(lastCharSet)){
+                for (int i = 0; i < charSet.size(); i++) {
+                    String charSetStr = charSet.get(i);
+                    String tempCurrentSubject=currentSubject.replace("??", "?"+charSetStr+"?");
+                    if(!TestMixCode.isMessyCode(MimeUtility.decodeText(tempCurrentSubject))){
+                        rightCharSet=charSetStr;
+                    }
+                }
+            }
+            currentSubject=currentSubject.replace("=??", "=?"+rightCharSet+"?");
             resultBuff.append(currentSubject);
             // 返回解码后的主题信息
             subject = MimeUtility.decodeText(resultBuff.toString());
         } catch (Exception e){
-
+            System.out.println("邮件主题信息转换异常:"+e.getMessage());
         }
-
+        subject=prefix+subject;
         return subject;
     }
 
