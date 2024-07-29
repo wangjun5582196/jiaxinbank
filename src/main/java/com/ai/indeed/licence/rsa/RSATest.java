@@ -30,7 +30,7 @@ public class RSATest {
 
 
         // 要加密的数据
-        String originalData = "Hel大大啊111111111111111111111111111111111啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊lo, RSA!";
+        String originalData = "54-14-F3-EC-51-08";
 
         // 使用公钥加密
         String encryptedData = RSAEncryption.encrypt2(originalData, publicKey);

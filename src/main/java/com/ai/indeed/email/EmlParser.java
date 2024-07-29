@@ -22,7 +22,7 @@ public class EmlParser {
 
     public static void main(String[] args) {
         // 读取.eml文件路径
-        String emlFilePath = "C:\\Users\\wangjun51000\\Desktop\\问题邮件/弘业弘惠1号证券投资基金估值表.eml";
+        String emlFilePath = "D:\\360MoveData\\Users\\wangjun51000\\Desktop\\问题邮件/浙商证券_1800052027_古曲祥辰3号_20240709-20240709普通对账单.eml";
 
         // 配置JavaMail会话
         Properties properties = System.getProperties();
@@ -92,6 +92,7 @@ public class EmlParser {
                     attachments.add(attachment);
                 }
             }
+            System.out.println(attachments.size());
         } catch (MessagingException | IOException e) {
             e.printStackTrace();
         }
